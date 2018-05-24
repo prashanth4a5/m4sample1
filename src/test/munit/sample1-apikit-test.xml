@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd http://www.mulesoft.org/schema/mule/munit-tools http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd ">
+    <munit:config name="sample1-apikit-test.xml" />
+    <http:request-config name="HTTP_Request_Configuration" basePath="/api">
+        <http:request-connection host="localhost" port="8081" />
+    </http:request-config>
+    <munit:test name="get:\status:sample1-config-200-application\json-FlowTest" description="Verifying functionality of [get:\status:sample1-config-200-application\json]">
+        <munit:enable-flow-sources>
+            <munit:enable-flow-source value="sample1-main" />
+            <munit:enable-flow-source value="get:\status:sample1-config" />
+        </munit:enable-flow-sources>
+        <munit:execution>
+            <http:request config-ref="HTTP_Request_Configuration" method="GET" path="/status">
+                <http:headers>#[{"Accept":"application/json"}]</http:headers>
+            </http:request>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression="#[attributes.statusCode]" is="#[MunitTools::equalTo(200)]" message="The HTTP Status code is not correct!" doc:name="Assert That Status Code is 200" />
+        </munit:validation>
+    </munit:test>
+        	<munit:test name="sample1-test-suite-get:\status:sample1-configTest" description="Test" doc:id="5e52844a-c8b0-4d65-b168-a6c690dbe1f5" >
+		<munit:execution >
+			<flow-ref doc:name="get:\status:sample1-config" doc:id="2a7fb1ce-fc3a-4fed-9d25-c38c6ac31829" name="get:\status:sample1-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="3773e241-a8e9-4e2f-9852-44a5d57fd2d6" expression="#[payload]" is="#[MunitTools::notNullValue()]"/>
+		</munit:validation>
+	</munit:test>
+</mule>

@@ -1,0 +1,13 @@
+#%RAML 1.0
+version: v1
+baseUri: https://mocksvc.mulesoft.com/mocks/8f12865e-5bf2-4a9d-af46-621cbda8555a # 
+title: sample1
+traits: 
+  hasResponseItem: !include exchange_modules/e9bd3b70-3ab5-42af-9bbb-73de8a71c77f/reuse/1.0.1/traits/hasResponseItem.raml
+/status:
+ get:
+   is: [
+        hasResponseItem: {
+          exampleResponseItem: !include exchange_modules/e9bd3b70-3ab5-42af-9bbb-73de8a71c77f/reuse/1.0.1/examples/status.json
+          }
+        ] 
